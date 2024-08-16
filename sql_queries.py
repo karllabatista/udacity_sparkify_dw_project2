@@ -17,7 +17,7 @@ REGION        = config.get('S3','REGION')
 staging_events_table_drop = "DROP TABLE staging_events;"
 staging_songs_table_drop = "DROP TABLE staging_songs;"
 songplay_table_drop = "DROP TABLE songplay;"
-user_table_drop = "DROP TABLE user;"
+user_table_drop = "DROP TABLE users;"
 song_table_drop = "DROP TABLE song;"
 artist_table_drop = "DROP TABLE artist;"
 time_table_drop = "DROP TABLE time;"
@@ -33,8 +33,8 @@ staging_events_table_create= ("""
         gender CHAR(1),
         itemInSession SMALLINT,
         last_name VARCHAR(500) NOT NULL,
-        length DECIMAL(5,7),
-        level CHAR(5),
+        length DECIMAL(6),
+        level CHAR(20),
         location VARCHAR(500),
         method CHAR(3),
         page VARCHAR(100) NOT NULL,
@@ -54,26 +54,41 @@ staging_events_table_create= ("""
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs
     (
-        song_id integer identity (0,1) not null,
+        song_id integer identity (0,1) PRIMARY KEY,
         title varchar(300) not null,
         artist_name varchar(300) not null,
-        year integer null,
-        duration integer null 
+        year integer ,
+        duration integer 
     )
     DISTSTYLE ALL;
                                                           
 """)
 
 
+#songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
 songplay_table_create = ("""
+    CREATE TABLE IF NOT EXISTS songplay
+    (
+    
+    songplay_id INTEGER IDENTITY(0,1) PRIMARY KEY,
+    start_time TIMESTAMP NOT NULL,
+    user_id INTEGER NOT NULL,
+    level CHAR(20),
+    song_id INTEGER NOT NULL,
+    artist_id INTEGER NOT NULL,
+    session_id INTEGER NOT NULL,
+    location VARCHAR(500),
+    user_agent VARCHAR(100)                    
+                         
+    );
   
 """)
 
 user_table_create = ("""
-    CREATE TABLE  IF NOT EXISTS user 
+    CREATE TABLE IF NOT EXISTS users 
     (                 
-        user_id integer identity (0,1) not null,
+        user_id INTEGER IDENTITY (0,1) PRIMARY KEY,
         first_name VARCHAR(500) NOT NULL,
         last_name  VARCHAR(500) NOT NULL,
         gender CHAR(1) ,
@@ -87,7 +102,7 @@ user_table_create = ("""
 song_table_create = ("""
     CREATE TABLE  IF NOT EXISTS song
     (                 
-        song_id integer identity (0,1) NOT NULL,
+        song_id  INTEGER IDENTITY (0,1) PRIMARY KEY,
         title VARCHAR(500) NOT NULL,
         last_name  VARCHAR(500) NOT NULL,
         year integer NOT NULL,
@@ -97,17 +112,32 @@ song_table_create = ("""
     
 """)
 
-#artist_id, name, location, latitude, longitude
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artist
     (
-    
-                       
-    );
+        artist_id INTEGER PRIMARY KEY,
+        name VARCHAR(500) NOT NULL,
+        location VARCHAR(500),
+        latitude FLOAT,
+        longitude FLOAT
+        
+    )
+    DISTSTYLE ALL;
 
 """)
-
 time_table_create = ("""
+    CREATE TABLE IF NOT EXISTS TIME
+    (
+        start_time TIMESTAMP NOT NULL,
+        hour INTEGER,
+        day INTEGER,
+        week INTEGER,
+        year INTEGER NOT NULL,
+        weekday VARCHAR(100)
+                                 
+    )
+    
+    DISTSTYLE ALL; 
 """)
 
 # STAGING TABLES
@@ -132,6 +162,7 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+
 """)
 
 user_table_insert = ("""
@@ -148,11 +179,9 @@ time_table_insert = ("""
 
 # QUERY LISTS
 
-#create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
-#drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
+create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
+drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 #copy_table_queries = [staging_events_copy, staging_songs_copy]
 #insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
 
 
-create_table_queries = [staging_songs_table_create]
-copy_table_queries = [staging_events_copy, staging_songs_copy]

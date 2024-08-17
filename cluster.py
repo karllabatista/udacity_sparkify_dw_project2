@@ -168,13 +168,13 @@ class Cluster:
             vpc = ec2.Vpc(id=self.myClusterProps['VpcId'])
             defaultSg = list(vpc.security_groups.all())[0]
             print(list(vpc.security_groups.all()))
-            #print(defaultSg)
-            #print("------------------------------------")
-            #print(defaultSg.ip_permissions) 
+            print(defaultSg)
+            print("------------------------------------")
+            print(defaultSg.ip_permissions) 
 
             # Define os parâmetros da regra
             cidr_ip = '0.0.0.0/0'
-            ip_protocol = 'TCP'
+            ip_protocol = 'tcp'
             from_port = int(self.DWH_PORT)
             to_port = int(self.DWH_PORT)
             
@@ -183,19 +183,25 @@ class Cluster:
 
             for rule in existings_permissions:
 
-                if (rule['FromPort'] == from_port and rule['ToPort'] == to_port and rule['IpProtocol'] == ip_protocol):
-
-                    for ip_range in rule['IpRanges']:
-                        if ip_range.get('CidrIp') == cidr_ip:
-                            rule_exists= True
+                if all(key in rule for key in ['FromPort', 'ToPort', 'IpProtocol']):
+                    
+                    if (rule['FromPort'] == from_port and rule['ToPort'] == to_port and rule['IpProtocol'] == ip_protocol):
+                            
+                        for ip_range in rule['IpRanges']:
+                            if ip_range.get('CidrIp') == cidr_ip:
+                                rule_exists= True
+                                break
+                if rule_exists:
+                    break
 
             if rule_exists:
                 print(f"Rule already exists: {ip_protocol}, {cidr_ip}, from port {from_port}, to port {to_port}")
+                print("Continue")
             else:
                 defaultSg.authorize_ingress(
                 GroupName=defaultSg.group_name,
-                CidrIp='0.0.0.0/0',
-                IpProtocol='TCP',
+                CidrIp=cidr_ip,
+                IpProtocol=ip_protocol,
                 FromPort=int(self.DWH_PORT),    
                 ToPort=int(self.DWH_PORT)
             )   
@@ -206,11 +212,12 @@ class Cluster:
     def deploy_cluster(self,redshift,iam,ec2):
 
 
+        ready= False
         available = False
       
         try:
         
-            #self.set_roles_config(iam)
+            self.set_roles_config(iam)
 
             roleArn =  self.get_ARN(iam)
             self.create_cluster(redshift,roleArn)
@@ -220,13 +227,16 @@ class Cluster:
             if available:
                 self.set_host_cluster()
                 self.access_cluster_by_endpoint(ec2)
+
+                print("Cluster is ready")
+                ready= True
             else:
                 print("Cluster is not available.Try again")
 
         except Exception as error:
             print(f"Error to depoly cluster {error}.Try again")
 
-        return available
+        return ready
         
     def delete_cluster(self,redshift):
 

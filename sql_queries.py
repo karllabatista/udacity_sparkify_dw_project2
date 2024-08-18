@@ -88,10 +88,10 @@ songplay_table_create = ("""
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users 
     (                 
-        user_id INTEGER IDENTITY (0,1) PRIMARY KEY,
+        user_id INTEGER ,
         first_name VARCHAR(500) NOT NULL,
         last_name  VARCHAR(500) NOT NULL,
-        gender CHAR(1) ,
+        gender VARCHAR(20) ,
         level VARCHAR(20) 
     )
     DISTSTYLE ALL;               
@@ -167,6 +167,13 @@ songplay_table_insert = ("""
 """)
 
 user_table_insert = ("""
+INSERT INTO USERS(user_id,first_name,last_name,gender,level)
+SELECT  COALESCE(NULLIF(sev.userID,0)) as user_id,
+        COALESCE(NULLIF(sev.first_name, ''), 'N/A'),
+        COALESCE(NULLIF(sev.last_name, ''), 'N/A'),
+        COALESCE(NULLIF(sev.gender, ''), 'N/A'),
+        sev.level
+FROM staging_events as sev;
 """)
 
 song_table_insert = ("""

@@ -1,18 +1,39 @@
 import boto3
 import configparser
 from cluster import Cluster             
-from create_tables import inicialize_database
 
-class CreateDatabase:
+class ClusterManager:
+    
+    """Manager deploy of cluster
+    
+    """
 
     def __init__(self):
+        """
+        Parameters:
+        ----------
+        None
+        """
         
         config = configparser.ConfigParser()
         config.read_file(open('dwh.cfg'))
         self.KEY     = config.get('AWS','KEY')
         self.SECRET  = config.get('AWS','SECRET')
     
-    def run(self):
+    def setup_resources(self):
+        """Initialize AWS services and deploy the Redshift cluster.
+    
+        This method sets up connections to EC2, S3, IAM, and Redshift services,
+        and then uses these services to deploy the Redshift cluster.
+
+        Paramenters
+        ---------
+        None
+
+        Returns
+        ------
+        None
+        """
         
         ec2 = boto3.resource('ec2',
                         region_name='us-west-2', 
@@ -33,19 +54,13 @@ class CreateDatabase:
                                 aws_secret_access_key=self.SECRET)
         
         cluster = Cluster()
-        ready = cluster.deploy_cluster(redshift,iam,ec2)
-        
-        if ready:
-
-            inicialize_database()
-        
-
+        cluster.deploy_cluster(redshift,iam,ec2)
           
        
 if __name__=='__main__':
         
-    create_db =CreateDatabase()
-    create_db.run()
+    cm=ClusterManager()
+    cm.setup_resources()
  
     
             

@@ -1,10 +1,7 @@
 import boto3
-import json
 import configparser
 from cluster import Cluster             
 from create_tables import inicialize_database
-from etl import etl
-
 
 class CreateDatabase:
 
@@ -41,15 +38,12 @@ class CreateDatabase:
         if ready:
 
             inicialize_database()
-           
-
-        #delete cluster function
+        
 
           
        
 if __name__=='__main__':
         
-    #print("que saco fazer isso")
     create_db =CreateDatabase()
     create_db.run()
  

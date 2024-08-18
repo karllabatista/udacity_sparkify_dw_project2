@@ -14,13 +14,13 @@ REGION        = config.get('S3','REGION')
 
 # DROP TABLES
 
-staging_events_table_drop = "DROP TABLE staging_events;"
-staging_songs_table_drop = "DROP TABLE staging_songs;"
-songplay_table_drop = "DROP TABLE songplay;"
-user_table_drop = "DROP TABLE users;"
-song_table_drop = "DROP TABLE song;"
-artist_table_drop = "DROP TABLE artist;"
-time_table_drop = "DROP TABLE time;"
+staging_events_table_drop = "DROP TABLE  IF EXISTS staging_events;"
+staging_songs_table_drop = "DROP TABLE  IF EXISTS staging_songs;"
+songplay_table_drop = "DROP TABLE  IF EXISTS songplays;"
+user_table_drop = "DROP TABLE  IF EXISTS users;"
+song_table_drop = "DROP TABLE  IF EXISTS songs;"
+artist_table_drop = "DROP TABLE  IF EXISTS artists;"
+time_table_drop = "DROP TABLE  IF EXISTS time;"
 
 # CREATE TABLES
 

@@ -54,16 +54,21 @@ staging_events_table_create= ("""
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs
     (
-        song_id INTEGER IDENTITY (0,1),
+        song_id VARCHAR(300),
+        num_songs INTEGER,
         title VARCHAR (500),
         artist_name VARCHAR (500),
+        artist_latitude VARCHAR,
         year INTEGER,
-        duration VARCHAR 
+        duration VARCHAR,
+        artist_id VARCHAR,
+        artist_longitude VARCHAR,
+        artist_location VARCHAR(500)
+                              
     )
     DISTSTYLE ALL;
                                                           
 """)
-
 
 #songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
@@ -115,7 +120,7 @@ song_table_create = ("""
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artist
     (
-        artist_id INTEGER PRIMARY KEY,
+        artist_id VARCHAR PRIMARY KEY,
         name VARCHAR(500) NOT NULL,
         location VARCHAR(500),
         latitude FLOAT,
@@ -181,6 +186,13 @@ song_table_insert = ("""
 """)
 
 artist_table_insert = ("""
+INSERT INTO artist(artist_id,name,location,latitude,longitude)
+SELECT  ss.artist_id AS artist_id,
+        ss.artist_name AS name,
+        ss.artist_location AS location,
+        CAST(ss.artist_latitude AS FLOAT) AS latitude,
+        CAST(ss.artist_longitude AS FLOAT) AS longitude
+FROM staging_songs as ss;
 """)
 
 time_table_insert = ("""

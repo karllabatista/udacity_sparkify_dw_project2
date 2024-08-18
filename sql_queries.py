@@ -132,8 +132,9 @@ time_table_create = ("""
         hour INTEGER,
         day INTEGER,
         week INTEGER,
+        month INTEGER,
         year INTEGER NOT NULL,
-        weekday VARCHAR(100)
+        weekday VARCHAR
                                  
     )
     
@@ -183,6 +184,16 @@ artist_table_insert = ("""
 """)
 
 time_table_insert = ("""
+INSERT INTO time(start_time,hour,day,week,month,year,weekday)
+SELECT TIMESTAMP 'epoch' + ts / 1000 * INTERVAL '1 second' AS start_time,
+    EXTRACT(hour FROM start_time) as hour,
+    EXTRACT(day FROM start_time) as day,
+    EXTRACT(week FROM start_time) as week,
+    EXTRACT(month FROM start_time) as month,
+    EXTRACT(year FROM start_time) as year ,
+    EXTRACT(weekday FROM start_time) as weekday
+FROM staging_events AS sev
+WHERE sev.page='NextSong';
 """)
 
 # QUERY LISTS

@@ -105,13 +105,13 @@ user_table_create = ("""
 """)
 
 song_table_create = ("""
-    CREATE TABLE  IF NOT EXISTS song
+    CREATE TABLE  IF NOT EXISTS songs
     (                 
-        song_id  INTEGER IDENTITY (0,1) PRIMARY KEY,
+        song_id VARCHAR(500) PRIMARY KEY NOT NULL,
         title VARCHAR(500) NOT NULL,
-        last_name  VARCHAR(500) NOT NULL,
-        year integer NOT NULL,
-        duration  DECIMAL(7,5) NOT NULL
+        artist_id  VARCHAR(500) NOT NULL,
+        year INTEGER,
+        duration  FLOAT 
     )
     DISTSTYLE ALL;               
     
@@ -183,6 +183,14 @@ FROM staging_events as sev;
 """)
 
 song_table_insert = ("""
+INSERT INTO SONGS(song_id,title,artist_id,year,duration)
+SELECT  ss.song_id,
+        ss.title,
+        ss.artist_id,
+        ss.year,
+        CAST(ss.duration AS FLOAT) AS duration
+FROM staging_songs as ss;
+
 """)
 
 artist_table_insert = ("""

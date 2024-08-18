@@ -73,18 +73,18 @@ staging_songs_table_create = ("""
 #songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
 songplay_table_create = ("""
-    CREATE TABLE IF NOT EXISTS songplay
+    CREATE TABLE IF NOT EXISTS songplays
     (
     
     songplay_id INTEGER IDENTITY(0,1) PRIMARY KEY,
     start_time TIMESTAMP NOT NULL,
     user_id INTEGER NOT NULL,
     level CHAR(20),
-    song_id INTEGER NOT NULL,
-    artist_id INTEGER NOT NULL,
+    song_id VARCHAR(500) NOT NULL,
+    artist_id VARCHAR(500) NOT NULL,
     session_id INTEGER NOT NULL,
     location VARCHAR(500),
-    user_agent VARCHAR(100)                    
+    user_agent VARCHAR(500)                    
                          
     );
   
@@ -169,6 +169,19 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+                         
+INSERT INTO SONGPLAYS(start_time,user_id,level,song_id,artist_id,session_id,location,user_agent)
+SELECT TIMESTAMP 'epoch' + se.ts / 1000 * INTERVAL '1 second' AS start_time,
+        se.userID AS user_id,
+        se.level,
+        se.song AS song_id,
+        se.artist AS artist_id,
+        se.sessionId as session_id,
+        se.location AS location,
+        se.userAgent AS user_agent
+FROM staging_events se
+WHERE se.page ='NextSong';
+
 
 """)
 

@@ -93,6 +93,19 @@ In this project there are five scripts:
 - **create_table.py** is where will be create your fact and dimension tables for the star schema in Redshift.
 - **etl.py** is where will be load data from S3 into staging tables on Redshift and then process that data into your analytics tables on Redshift.
 - **sql_queries.py** is where will be define you SQL statements, which will be imported into the two other files above.
+## ETL Pipeline
+
+#### Extraction
+The Extract step is done extract data of S3 source and copy data in  stage tables.
+
+##### Stage Tables
+
+Stages Tables are tables created to store raw data. The main purpose this tables is use this raw data to make data transform . After the data being tranformed are inserted in analytical tables (final tables)
+
+#### Transformation
+
+#### Load
+
 
 ## Quick Start
 #### Pre requistes
@@ -100,10 +113,12 @@ In this project there are five scripts:
 - Create a new IAM user in your AWS account
 - Give it AdministratorAccess, From Attach existing policies directly Tab
 - Take note of the access key and secret
-- Edit the file dwh.cfg in the same folder as this notebook and fill
- [AWS]
- KEY= YOUR_AWS_KEY
- SECRET= YOUR_AWS_SECRET
+- Edit the file dwh.cfg in the same folder as this notebook and fill:
+
+[AWS]
+KEY= YOUR_AWS_KEY
+SECRET= YOUR_AWS_SECRET
+
 #### How to run
 ```python
 # create a virtual environment
@@ -127,9 +142,11 @@ python3 create_tables.py
 # insert data transformed in final tables
 python3 etl.py
 ```
-**Notes**:
+`**NOTES**`:
 - Execute each script one by one
 - The cluster_manager.py and create_tables.py are runned fast.
-- The load in staging tables:
+- The load in staging tables (etl.py):
     - it takes a while to load all the tables
     - the load data in stage_songs takes a while approximately 42 minutes to load all the data into the table
+
+### Data Analysis

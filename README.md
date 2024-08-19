@@ -13,7 +13,6 @@ To build this architecture will be used the AWS cloud. The services used will be
 The main task of this project is build a ETL pepiline that extracts  their data from S3, stages them in Redshift, and transforms data into a set of dimensional tables for their analytics team to continue finding insights into what songs their users are listening to.
 The following image show the system architecture for AWS S3 to Redshift ETL:
 
-
 ![redshift_arch](img/redshfit_arch.png)
 
 # Datasets
@@ -87,6 +86,50 @@ The schema type used for this build this datawarehouse is the star schema.This i
     - _artist_id_, _name_, _location_, _latitude_, _longitude_
 - **time** - timestamps of records in songplays broken down into specific units
     - _start_time_, _hour_, _day_, _week_, _month_, _year_, _weekday_
-
 ## Project Tempalte
-falar dos scripts
+In this project there are five scripts:
+- **cluster.py** is where creater the cluster with IAM credencias and call the Redshfit client.
+- **cluster_manager.py** is where manager deploy cluster.
+- **create_table.py** is where will be create your fact and dimension tables for the star schema in Redshift.
+- **etl.py** is where will be load data from S3 into staging tables on Redshift and then process that data into your analytics tables on Redshift.
+- **sql_queries.py** is where will be define you SQL statements, which will be imported into the two other files above.
+
+## Quick Start
+#### Pre requistes
+- Python 3.x installed
+- Create a new IAM user in your AWS account
+- Give it AdministratorAccess, From Attach existing policies directly Tab
+- Take note of the access key and secret
+- Edit the file dwh.cfg in the same folder as this notebook and fill
+ [AWS]
+ KEY= YOUR_AWS_KEY
+ SECRET= YOUR_AWS_SECRET
+#### How to run
+```python
+# create a virtual environment
+python3 -m env venv
+
+#activate virtual environment
+source venv/bin/activate
+
+#install minimal prerequisites
+pip3 install -r requirements.txt
+
+#create and setup cluster
+python3 cluster_manager.py
+
+#create stages tables
+#create final table
+python3 create_tables.py
+
+# makes extract from S3 to load stages tables
+# makes transform  on stages table dados
+# insert data transformed in final tables
+python3 etl.py
+```
+**Notes**:
+- Execute each script one by one
+- The cluster_manager.py and create_tables.py are runned fast.
+- The load in staging tables:
+    - it takes a while to load all the tables
+    - the load data in stage_songs takes a while approximately 42 minutes to load all the data into the table

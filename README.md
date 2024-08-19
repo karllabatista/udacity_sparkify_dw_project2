@@ -1,9 +1,18 @@
 # The Sparkfy 
 Sparkify is a music streming startup with many daily listeners. Sparkfy's databases grew over time and the need arose to move this data to a cloud environment.
 So the goal of this project is to move their process and data to this new enviroment.
+
+# AWS  Services
+To build this architecture will be used the AWS cloud. The services will be:
+- IAM
+- Redshift
+- EC2
+- S3
+
 # Sparkfy  S3 to Redshift ETL
 The main task of this project is build a ETL pepiline that extracts  their data from S3, stages them in Redshift, and transforms data into a set of dimensional tables for their analytics team to continue finding insights into what songs their users are listening to.
 The following image show the system architecture for AWS S3 to Redshift ETL:
+
 ![redshift_arch](img/redshfit_arch.png)
 
 # Datasets
@@ -57,3 +66,22 @@ In the context of this project, you will need the log_json_path.json file in the
 Below is what data is in log_json_path.json.
 
 ![log_json_path](img/log_json_path.png)
+
+# Data Warehouse
+The schema type used for this build this datawarehouse is the star schema.This includes the following tables:
+
+<image_schema>
+
+**Fact Table**
+-  **songplays** - records in event data associated with song plays i.e. records with page _NextSong_:
+    - _songplay_id_, _start_time_, _user_id_, _level_, _song_id_, _artist_id_, _session_id_, _location_, _user_agent_
+
+**Dimension Tables**
+- **users** - users in the app
+    - _user_id_, _first_name_, _last_name_, _gender_, _level_
+- **songs** - songs in music database
+    - _song_id_, _title_, _artist_id_, _year_, _duration_
+- **artists** - artists in music database
+    - _artist_id_, _name_, _location_, _latitude_, _longitude_
+- **time** - timestamps of records in songplays broken down into specific units
+    - _start_time_, _hour_, _day_, _week_, _month_, _year_, _weekday_

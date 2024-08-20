@@ -92,7 +92,7 @@ In this project there are five scripts:
 - **cluster_manager.py** is where manager deploy cluster.
 - **create_table.py** is where will be create your fact and dimension tables for the star schema in Redshift.
 - **etl.py** is where will be load data from S3 into staging tables on Redshift and then process that data into your analytics tables on Redshift.
-- **sql_queries.py** is where will be define you SQL statements, which will be imported into the two other files above.
+- **sql_queries.py** is where will be define you SQL statements, which will be imported into the two other files above. 
 ## ETL Pipeline
 
 #### Extraction

@@ -70,7 +70,6 @@ staging_songs_table_create = ("""
                                                           
 """)
 
-#songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
 songplay_table_create = ("""
     CREATE TABLE IF NOT EXISTS songplays
@@ -199,7 +198,7 @@ WHERE se.page ='NextSong';
 
 song_table_insert = ("""
 INSERT INTO SONGS(song_id,title,artist_id,year,duration)
-SELECT  ss.song_id,
+SELECT  DISTINCT ss.song_id,
         ss.title,
         ss.artist_id,
         ss.year,
@@ -210,8 +209,8 @@ FROM staging_songs as ss;
 
 artist_table_insert = ("""
 INSERT INTO artists(artist_id,name,location,latitude,longitude)
-SELECT  ss.artist_id AS artist_id,
-        ss.artist_name AS name,
+SELECT  DISTINCT ss.artist_id AS artist_id,
+        COALESCE(NULLIF(ss.artist_name,''),'Unknown')  AS name,
         ss.artist_location AS location,
         CAST(ss.artist_latitude AS FLOAT) AS latitude,
         CAST(ss.artist_longitude AS FLOAT) AS longitude

@@ -21,14 +21,16 @@ def load_staging_tables(cur, conn):
     
     """
 
-    print("Loading stagging tables ..")
+   
     try:
-        
+        print("Loading stagging tables ..")
+
         for query in copy_table_queries:
+            print(f"Processing {query} .....")
             cur.execute(query)
             conn.commit()
-        print("Load completed successfully!!!")
-
+            print("--------------------------")
+        print("Copy tables finished!!!")
     except Exception as error:
         print(f"Error to load staging tables:{error}")
 
@@ -50,12 +52,16 @@ def insert_tables(cur, conn):
     None
     
     """
-    print("Inserting data ...")
+    print("Starting insert data ...")
     try:
         for query in insert_table_queries:
+            print(f"Processing {query} .....")
             cur.execute(query)
             conn.commit()
-        print("Data inserted completed successfully!!!")
+            print("Data inserted completed successfully!!!")
+            print("----------------------")
+        print("Insert data finished!!")
+        
     except Exception as error:
         print(f"An error occurred:{error}")
 
@@ -79,7 +85,7 @@ def main():
         cur = conn.cursor()
         
         load_staging_tables(cur, conn)
-        insert_tables(cur, conn)
+        #insert_tables(cur, conn)
 
     except Exception as error:
         print(f"Error during database operation: {error}")

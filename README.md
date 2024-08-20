@@ -121,6 +121,7 @@ In this project there are five scripts:
 The Extract step is done extract data of S3 source and copy data in  stage tables.
 
 **Total rows** stage_events:**8056 rows**
+
 **Total rows** stage_songs:**385252 rows**
 
 ##### Stage Tables

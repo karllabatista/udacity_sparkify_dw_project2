@@ -30,7 +30,8 @@ def load_staging_tables(cur, conn):
             cur.execute(query)
             conn.commit()
             print("--------------------------")
-        print("Copy tables finished!!!")
+        print("Finished copy tables!!!")
+        
     except Exception as error:
         print(f"Error to load staging tables:{error}")
 
@@ -60,7 +61,7 @@ def insert_tables(cur, conn):
             conn.commit()
             print("Data inserted completed successfully!!!")
             print("----------------------")
-        print("Insert data finished!!")
+        print("Finished insert data!!")
         
     except Exception as error:
         print(f"An error occurred:{error}")
@@ -84,8 +85,8 @@ def main():
         conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(*config['CLUSTER'].values()))
         cur = conn.cursor()
         
-        load_staging_tables(cur, conn)
-        #insert_tables(cur, conn)
+        #load_staging_tables(cur, conn)
+        insert_tables(cur, conn)
 
     except Exception as error:
         print(f"Error during database operation: {error}")

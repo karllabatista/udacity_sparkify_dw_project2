@@ -188,3 +188,6 @@ python3 etl.py
     - the load data in stage_songs takes a while approximately 42 minutes to load all the data into the table
 
 ### Data Analysis
+
+The analysis_data.ipynb contains some analyses about the songs players. Check the file
+to vizualizer this analyses. The file also the delete of cluster.

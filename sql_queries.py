@@ -187,7 +187,7 @@ WHERE se.page ='NextSong';
 
 user_table_insert = ("""
 INSERT INTO USERS(user_id,first_name,last_name,gender,level)
-SELECT  COALESCE(NULLIF(sev.userID,0)) as user_id,
+SELECT  DISTINCT  COALESCE(NULLIF(sev.userID,0)) as user_id,
         COALESCE(NULLIF(sev.first_name, ''), 'N/A'),
         COALESCE(NULLIF(sev.last_name, ''), 'N/A'),
         COALESCE(NULLIF(sev.gender, ''), 'N/A'),
@@ -219,7 +219,7 @@ FROM staging_songs as ss;
 
 time_table_insert = ("""
 INSERT INTO time(start_time,hour,day,week,month,year,weekday)
-SELECT TIMESTAMP 'epoch' + ts / 1000 * INTERVAL '1 second' AS start_time,
+SELECT DISTICT TIMESTAMP 'epoch' + ts / 1000 * INTERVAL '1 second' AS start_time,
     EXTRACT(hour FROM start_time) as hour,
     EXTRACT(day FROM start_time) as day,
     EXTRACT(week FROM start_time) as week,

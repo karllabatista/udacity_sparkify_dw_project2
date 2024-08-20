@@ -239,7 +239,7 @@ LIMIT 1;
 
 ### Delete Cluster
 
-After make analystes or test the features of Redshift delete the cluster. There are two ways todo that:
+After make analysis or test the features of Redshift delete the cluster. There are two ways todo that:
 
 - Delete cluster by AWS console
 

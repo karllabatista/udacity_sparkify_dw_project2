@@ -86,7 +86,7 @@ The schema type used for this build this datawarehouse is the star schema.This i
     - _artist_id_, _name_, _location_, _latitude_, _longitude_
 - **time** - timestamps of records in songplays broken down into specific units
     - _start_time_, _hour_, _day_, _week_, _month_, _year_, _weekday_
-## Project Tempalte
+## Project Template
 In this project there are five scripts:
 - **cluster.py** is where creater the cluster with IAM credencias and call the Redshfit client.
 - **cluster_manager.py** is where manager deploy cluster.
@@ -103,9 +103,14 @@ The Extract step is done extract data of S3 source and copy data in  stage table
 Stages Tables are tables created to store raw data. The main purpose this tables is use this raw data to make data transform . After the data being tranformed are inserted in analytical tables (final tables)
 
 #### Transformation
+The data transformation applied were:
+- **Handling null values**: Where null values were replaced with default values
+- **Remove duplicates**: Where rows with the same data were removed
+- **Timestamp Normalization**: Where the timestamp was transformed into understandable information
 
 #### Load
 
+Ater the transformation  stage is done all transformed data was inserted into analyses tables (final table)
 
 ## Quick Start
 #### Pre requistes
@@ -122,10 +127,10 @@ SECRET= YOUR_AWS_SECRET
 #### How to run
 ```python
 # create a virtual environment
-python3 -m env venv
+python3 -m venv env
 
 #activate virtual environment
-source venv/bin/activate
+source env/bin/activate
 
 #install minimal prerequisites
 pip3 install -r requirements.txt

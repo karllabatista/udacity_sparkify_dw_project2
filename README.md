@@ -98,11 +98,17 @@ The schema type used for this build this datawarehouse is the star schema.This i
     - _user_id_, _first_name_, _last_name_, _gender_, _level_
     
 - **songs** - songs in music database
+
     - _song_id_, _title_, _artist_id_, _year_, _duration_
+
 - **artists** - artists in music database
+
     - _artist_id_, _name_, _location_, _latitude_, _longitude_
+
 - **time** - timestamps of records in songplays broken down into specific units
+
     - _start_time_, _hour_, _day_, _week_, _month_, _year_, _weekday_
+
 ## Project Template
 
 In this project there are five scripts:
@@ -118,7 +124,9 @@ In this project there are five scripts:
 
 #### Extraction
 
-The Extract step is done extract data of S3 source and copy data in  stage tables.
+The Extract step is done extract data of S3 source and copy data in  stage tables. See bellow the stages tables:
+
+![stage_table](img/st2.png)
 
 **Total rows** stage_events:**8056 rows**
 
@@ -189,5 +197,50 @@ python3 etl.py
 
 ### Data Analysis
 
-The analysis_data.ipynb contains some analyses about the songs players. Check the file
-to vizualizer this analyses. The file also the delete of cluster.
+The **analysis_data.ipynb** contains some analyses about the songs players like:
+
+**1- Song most played**
+
+```sh
+select s.title as song_name,COUNT(sp.song_id) as most_played 
+FROM songplays sp
+JOIN songs s on sp.song_id=s.song_id
+GROUP BY(s.title)
+ORDER  BY most_played DESC
+limit 1;
+```
+
+**2-Song song least played**
+
+```sh
+select s.title as song_name,COUNT(sp.song_id) as most_played 
+FROM songplays sp
+JOIN songs s on sp.song_id=s.song_id
+GROUP BY(s.title)
+ORDER  BY most_played ASC
+limit 1;
+
+   
+```
+
+**3-Song most played on 2018**
+
+```sh
+SELECT s.title AS song_name, COUNT(sp.song_id) AS  most_played, t.year
+FROM songplays sp
+JOIN songs s ON sp.song_id = s.song_id
+JOIN time t ON sp.start_time = t.start_time
+WHERE t.year = 2018
+GROUP BY s.title, t.year
+ORDER BY  most_played  DESC
+LIMIT 1;
+   
+```
+
+### Delete Cluster
+
+After make analystes or test the features of Redshift delete the cluster. There are two ways todo that:
+
+- Delete cluster by AWS console
+
+- Delete cluster using python code in **analysis_data.ipynb**

@@ -24,8 +24,11 @@ def drop_tables(cur, conn):
     try:
         print("Dropping tables ..")
         for query in drop_table_queries:
+            print(f"Processing {query}...")
             cur.execute(query)
             conn.commit()
+            print("Table dropped successfully!")
+        
         print("Tables dropped successfully")
   
     except psycopg2.Error as error:
@@ -57,10 +60,12 @@ def create_tables(cur, conn):
     try:
         print("Creating tables ..")
         for query in create_table_queries:
+            print(f"Processing {query}...")
             cur.execute(query)
             conn.commit()
+            print("Table created successfully!")
 
-        print("Tables created successfully")
+        print("Finished Creating Tables!")
     
     except psycopg2.Error as error:
         print("An unexpected error in Database occurred:",error) 

@@ -93,7 +93,7 @@ songplay_table_create = ("""
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users 
     (                 
-        user_id INTEGER SORTKEY ,
+        user_id INTEGER PRIMARY KEY SORTKEY ,
         first_name VARCHAR(500) NOT NULL,
         last_name  VARCHAR(500) NOT NULL,
         gender VARCHAR(20) ,
@@ -133,7 +133,7 @@ artist_table_create = ("""
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS TIME
     (
-        start_time TIMESTAMP NOT NULL SORTKEY,
+        start_time TIMESTAMP NOT NULL PRIMARY KEY SORTKEY,
         hour INTEGER,
         day INTEGER,
         week INTEGER,

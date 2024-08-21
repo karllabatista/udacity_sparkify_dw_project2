@@ -241,6 +241,6 @@ LIMIT 1;
 
 After make analysis or test the features of Redshift delete the cluster. There are two ways todo that:
 
-- Delete cluster by AWS console
+- Delete cluster by AWS console: More information go to [official documentation](https://docs.aws.amazon.com/redshift/latest/mgmt/managing-clusters-console.html#delete-cluster)
 
 - Delete cluster using python code in **analysis_data.ipynb**

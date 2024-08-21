@@ -213,11 +213,11 @@ limit 1;
 **2-Song song least played**
 
 ```sh
-select s.title as song_name,COUNT(sp.song_id) as most_played 
+select s.title as song_name,COUNT(sp.song_id) as least_played 
 FROM songplays sp
 JOIN songs s on sp.song_id=s.song_id
 GROUP BY(s.title)
-ORDER  BY most_played ASC
+ORDER  BY least_played ASC
 limit 1;
 
    

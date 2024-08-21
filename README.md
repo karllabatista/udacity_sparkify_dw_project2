@@ -146,7 +146,7 @@ The data transformation applied were:
 
 #### Load
 
-Ater the transformation  stage is done all transformed data was inserted into analyses tables (final table)
+Ater the transformation  stage is done all transformed data was inserted into analysis tables (final table)
 
 ## Quick Start
 
@@ -197,7 +197,7 @@ python3 etl.py
 
 ### Data Analysis
 
-The **analysis_data.ipynb** contains some analyses about the songs players like:
+The **analysis_data.ipynb** contains some analysis about the songs players like:
 
 **1- Song most played**
 
